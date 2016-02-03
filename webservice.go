@@ -13,6 +13,11 @@ func HelloWorld(w http.ResponseWriter, r *http.Request) {
 	log.Print(r.URL.Path)
 }
 
+func Error404(w http.ResponseWriter, r *http.Request) {
+	http.Error(w, "Page not found", http.StatusNotFound)
+	log.Print(r.URL.Path)
+}
+
 func main() {
 	var srv http.Server
 
@@ -20,5 +25,6 @@ func main() {
 	http2.ConfigureServer(&srv, nil)
 	
 	http.HandleFunc("/", HelloWorld)
+	http.HandleFunc("/favicon.ico", Error404)
 	log.Fatal(srv.ListenAndServeTLS("localhost.crt", "localhost.key"))
 }
